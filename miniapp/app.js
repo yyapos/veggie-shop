@@ -1,6 +1,6 @@
 App({
   globalData: {
-    baseUrl: 'http://localhost:8080',  // 后端 API 基础地址，上线改为云服务器地址
+    baseUrl: 'http://192.168.1.209:8080',  // 后端 API 基础地址，上线改为云服务器地址
     userInfo: null
   },
 
