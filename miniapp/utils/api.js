@@ -4,7 +4,7 @@
  */
 const app = getApp();
 
-const BASE_URL = app?.globalData?.baseUrl || 'http://localhost:8080';
+const BASE_URL = app?.globalData?.baseUrl || 'http://192.168.1.209:8080';
 
 /**
  * 发起请求
