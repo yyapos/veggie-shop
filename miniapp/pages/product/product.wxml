@@ -1,68 +1,84 @@
-<!-- 商品管理列表 -->
-<wxs module="util" src="../../utils/util.wxs"></wxs>
 <view class="container">
-  <!-- 搜索栏 -->
-  <view class="flex-between mb-10">
-    <text></text>
-    <button class="btn-primary" size="mini" bindtap="goCategory">管理分类</button>
-  </view>
-  <view class="search-bar">
-    <input class="search-input" placeholder="搜索商品名称" bindinput="onSearch" value="{{searchName}}"
-           confirm-type="search" bindconfirm="doSearch" />
-    <button class="btn-primary search-btn" bindtap="doSearch" size="mini">搜索</button>
+  <!-- 面包屑导航 -->
+  <view class="breadcrumb" wx:if="{{parentId > 0 || breadcrumb.length > 0}}">
+    <text class="bc-item" bindtap="tapBreadcrumb" data-index="-1">全部</text>
+    <block wx:for="{{breadcrumb}}" wx:key="id" wx:for-index="idx">
+      <text class="bc-sep">›</text>
+      <text class="bc-item" bindtap="tapBreadcrumb" data-index="{{idx}}">{{item.name}}</text>
+    </block>
+    <text class="bc-sep">›</text>
+    <text class="bc-current">{{parentName}}</text>
   </view>
 
-  <!-- 分类标签 -->
-  <scroll-view scroll-x class="category-tabs" wx:if="{{categories.length > 0}}">
-    <view class="tab {{currentCategoryId === null ? 'active' : ''}}" bindtap="onCategoryTap" data-id="{{null}}">全部</view>
-    <view class="tab {{currentCategoryId === item.id ? 'active' : ''}}" wx:for="{{categories}}" wx:key="id"
-          bindtap="onCategoryTap" data-id="{{item.id}}">{{item.name}}</view>
-  </scroll-view>
+  <!-- 商品列表模式 -->
+  <block wx:if="{{showProducts}}">
+    <view class="flex-between mb-15">
+      <text class="text-bold text-lg">{{currentCategoryName}} - 商品列表</text>
+      <button class="btn-sm btn-cancel" bindtap="hideProducts">返回分类</button>
+    </view>
 
-  <!-- 商品列表 -->
-  <view class="product-list">
-    <view class="card product-item" wx:for="{{products}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+    <view class="card product-item" wx:for="{{products}}" wx:key="id">
+      <view class="flex-between">
+        <view class="flex-col" style="flex:1">
+          <text class="text-bold">{{item.name}}</text>
+          <text class="tag">{{item.priceTypeText}}</text>
+          <text class="text-sm text-muted mt-5">库存 {{item.stock}}{{item.unit}} | ¥{{item.formattedPrice}}/{{item.unit}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{hasMore && !loading}}" class="text-center mt-20" bindtap="loadMore">
+      <button class="btn-primary" size="mini">加载更多 ({{page}}/{{totalPages}})</button>
+    </view>
+    <view wx:if="{{!hasMore && products.length > 0}}" class="text-center mt-20">
+      <text class="text-muted">共 {{total}} 条，已全部加载</text>
+    </view>
+    <view wx:if="{{loading}}" class="text-center mt-20"><text class="text-muted">加载中...</text></view>
+    <view wx:if="{{!loading && products.length === 0}}" class="text-center mt-30">
+      <text class="text-muted">该分类下暂无商品</text>
+    </view>
+  </block>
+
+  <!-- 分类列表模式 -->
+  <block wx:else>
+    <view class="card category-card" wx:for="{{categories}}" wx:key="id">
       <view class="flex-between">
         <view class="flex-col" style="flex:1">
           <view class="flex-row">
-            <text class="text-bold text-lg">{{item.name}}</text>
-            <text class="tag tag-info mr-10">{{item.priceTypeText}}</text>
-          </view>
-          <view class="mt-10 flex-row">
-            <text class="text-primary text-bold mr-20">¥{{item.formattedPrice}}/{{item.unit}}</text>
-            <text class="text-sm text-muted">库存: {{item.stock}}{{item.unit}}</text>
+            <text class="cat-name">{{item.name}}</text>
+            <text class="cat-count" wx:if="{{item.children && item.children.length}}">{{item.children.length}}个子分类</text>
           </view>
         </view>
-        <view>
-          <button class="{{item.status === 1 ? 'btn-danger' : 'btn-primary'}}" size="mini"
-                  catchtap="toggleStatus" data-id="{{item.id}}" data-status="{{item.status}}">
-            {{item.status === 1 ? '下架' : '上架'}}
-          </button>
+        <view class="btn-group">
+          <button class="btn-sm btn-primary" size="mini" bindtap="viewProducts" data-id="{{item.id}}" data-name="{{item.name}}">查看商品</button>
+          <button class="btn-sm" size="mini" bindtap="tapCategory" data-id="{{item.id}}" data-name="{{item.name}}">子分类</button>
+          <button class="btn-sm" size="mini" bindtap="showEdit" data-id="{{item.id}}" data-name="{{item.name}}">编辑</button>
+          <button class="btn-sm" size="mini" bindtap="deleteCategory" data-id="{{item.id}}" data-name="{{item.name}}" style="background:#fa5151;color:#fff">删除</button>
         </view>
-      </view>
-      <!-- 库存预警 -->
-      <view class="mt-10" wx:if="{{item.stock <= item.warningStock}}">
-        <text class="tag tag-danger">库存不足</text>
       </view>
     </view>
 
-    <!-- 分页状态 -->
-    <view wx:if="{{loading}}" class="text-center mt-30">
-      <text class="text-muted">加载中...</text>
+    <view wx:if="{{categories.length === 0}}" class="text-center mt-30">
+      <text class="text-muted">暂无分类，请添加</text>
     </view>
-    <view wx:if="{{hasMore && !loading}}" class="text-center mt-30" bindtap="loadMore">
-      <button class="btn-primary" size="mini">加载更多 ({{page}}/{{totalPages}})</button>
-    </view>
-    <view wx:if="{{!hasMore && products.length > 0}}" class="text-center mt-30">
-      <text class="text-muted">共 {{total}} 条，已全部加载</text>
-    </view>
-    <view wx:if="{{!loading && products.length === 0}}" class="text-center mt-30">
-      <text class="text-muted">暂无商品，点击右下角 + 添加</text>
-    </view>
-  </view>
 
-  <!-- 新增按钮 -->
-  <view class="float-btn" bindtap="goAdd">
-    <text class="float-btn-text">+</text>
+    <button class="btn-primary mt-20" style="width:100%" bindtap="showAdd" data-parent-id="{{parentId}}">+ 添加分类</button>
+  </block>
+
+  <!-- 新增/编辑弹窗 -->
+  <view class="modal" wx:if="{{showForm}}" catchtap="hideForm">
+    <view class="modal-content" catchtap="">
+      <view class="card">
+        <view class="text-bold text-lg mb-20">{{isEdit ? '编辑分类' : '新增分类'}}</view>
+        <view class="form-group">
+          <view class="form-label">分类名称</view>
+          <input class="field-input" value="{{form.name}}" bindinput="onNameInput" placeholder="请输入" />
+        </view>
+        <view class="flex-between mt-20">
+          <button class="btn-cancel" bindtap="hideForm">取消</button>
+          <button class="btn-primary" bindtap="saveCategory">保存</button>
+        </view>
+      </view>
+    </view>
   </view>
 </view>
