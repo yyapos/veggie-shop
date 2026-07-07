@@ -1,0 +1,81 @@
+<!-- 赊账人详情 -->
+<view class="container" wx:if="{{debtor}}">
+  <!-- 赊账人信息 -->
+  <view class="card overview-section">
+    <view class="text-lg text-bold">{{debtor.name}}</view>
+    <view class="text-sm mt-10" wx:if="{{debtor.phone}}">📞 {{debtor.phone}}</view>
+    <view class="flex-between mt-20">
+      <view class="text-center">
+        <view class="overview-value">{{util.formatMoney(debtor.unpaidAmount)}}</view>
+        <view class="overview-label">未还金额</view>
+      </view>
+      <view class="text-center">
+        <view class="overview-value">{{util.formatMoney(debtor.paidAmount)}}</view>
+        <view class="overview-label">已还金额</view>
+      </view>
+      <view class="text-center">
+        <view class="overview-value">{{util.formatMoney(debtor.totalDebt)}}</view>
+        <view class="overview-label">累计欠款</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 还款按钮 -->
+  <button class="btn-primary" style="width:100%; margin-bottom:20rpx" bindtap="showRepay"
+          wx:if="{{debtor.unpaidAmount > 0}}">
+    💰 记录还款
+  </button>
+
+  <!-- 未还赊账 -->
+  <view class="card">
+    <view class="section-title mb-20">未还赊账记录</view>
+    <view class="record-item flex-between" wx:for="{{unpaidDebts}}" wx:key="id">
+      <view>
+        <text>{{item.debtDate}}</text>
+        <text class="ml-10">¥{{util.formatMoney(item.amount)}}</text>
+      </view>
+      <button class="btn-default" size="mini" bindtap="markSinglePaid" data-id="{{item.id}}">标记已还</button>
+    </view>
+    <view wx:if="{{unpaidDebts.length === 0}}" class="text-center text-muted">无未还记录</view>
+  </view>
+
+  <!-- 还款记录 -->
+  <view class="card mt-20">
+    <view class="section-title mb-20">还款记录</view>
+    <view class="record-item flex-between" wx:for="{{repayments}}" wx:key="id">
+      <view>
+        <text>{{item.repayDate}}</text>
+        <text class="ml-10">¥{{util.formatMoney(item.amount)}}</text>
+        <text class="text-sm text-muted ml-10" wx:if="{{item.remark}}">{{item.remark}}</text>
+      </view>
+    </view>
+    <view wx:if="{{repayments.length === 0}}" class="text-center text-muted">暂无还款记录</view>
+  </view>
+
+  <!-- 还款弹窗 -->
+  <view class="picker-overlay" wx:if="{{showRepayForm}}" bindtap="hideRepay">
+    <view class="picker-content" catchtap="">
+      <view class="picker-header flex-between">
+        <text class="text-bold">记录还款</text>
+        <text class="text-primary" bindtap="hideRepay">取消</text>
+      </view>
+      <view style="padding:30rpx">
+        <view class="form-group">
+          <view class="form-label">还款金额 *（未还: ¥{{util.formatMoney(debtor.unpaidAmount)}}）</view>
+          <input class="form-input" type="digit" placeholder="请输入还款金额" value="{{repayAmount}}"
+                 bindinput="onFieldChange" data-field="repayAmount" />
+        </view>
+        <view class="form-group">
+          <view class="form-label">备注</view>
+          <input class="form-input" placeholder="选填" value="{{repayRemark}}"
+                 bindinput="onFieldChange" data-field="repayRemark" />
+        </view>
+        <button class="btn-primary" style="width:100%" bindtap="confirmRepay">确认还款</button>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class="container text-center mt-30" wx:if="{{!debtor}}">
+  <text class="text-muted">加载中...</text>
+</view>

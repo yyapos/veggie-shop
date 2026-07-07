@@ -1,0 +1,63 @@
+<!-- 赊账管理 -->
+<view class="container">
+  <!-- 赊账人列表 -->
+  <view class="card debtor-item" wx:for="{{debtors}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+    <view class="flex-between">
+      <view>
+        <text class="text-bold text-lg">{{item.name}}</text>
+        <text class="text-sm text-muted ml-10" wx:if="{{item.phone}}">{{item.phone}}</text>
+      </view>
+      <view>
+        <text class="tag {{item.unpaidAmount > 0 ? 'tag-danger' : 'tag-success'}}">
+          {{item.unpaidAmount > 0 ? '有欠款' : '已结清'}}
+        </text>
+      </view>
+    </view>
+    <view class="flex-between mt-20">
+      <view class="text-center">
+        <view class="text-lg text-bold text-danger">¥{{util.formatMoney(item.unpaidAmount)}}</view>
+        <view class="text-sm text-muted">未还</view>
+      </view>
+      <view class="text-center">
+        <view class="text-lg text-bold">¥{{util.formatMoney(item.paidAmount)}}</view>
+        <view class="text-sm text-muted">已还</view>
+      </view>
+      <view class="text-center">
+        <view class="text-lg text-bold">¥{{util.formatMoney(item.totalDebt)}}</view>
+        <view class="text-sm text-muted">累计</view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{debtors.length === 0}}" class="text-center mt-30">
+    <text class="text-muted">暂无赊账记录</text>
+  </view>
+
+  <!-- 添加按钮 -->
+  <view class="float-btn" bindtap="showAdd">
+    <text class="float-btn-text">+</text>
+  </view>
+
+  <!-- 添加表单弹窗 -->
+  <view class="picker-overlay" wx:if="{{showAddForm}}" bindtap="hideAdd">
+    <view class="picker-content" catchtap="">
+      <view class="picker-header flex-between">
+        <text class="text-bold">新增赊账人</text>
+        <text class="text-primary" bindtap="hideAdd">取消</text>
+      </view>
+      <view style="padding:30rpx">
+        <view class="form-group">
+          <view class="form-label">姓名 *</view>
+          <input class="form-input" placeholder="请输入姓名" value="{{newName}}"
+                 bindinput="onFieldChange" data-field="newName" />
+        </view>
+        <view class="form-group">
+          <view class="form-label">电话</view>
+          <input class="form-input" type="number" placeholder="选填" value="{{newPhone}}"
+                 bindinput="onFieldChange" data-field="newPhone" />
+        </view>
+        <button class="btn-primary" style="width:100%" bindtap="addDebtor">确认添加</button>
+      </view>
+    </view>
+  </view>
+</view>

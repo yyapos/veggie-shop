@@ -1,0 +1,81 @@
+<!-- 进货管理 -->
+<view class="container">
+  <view class="card">
+    <view class="section-title mb-20">新增进货</view>
+
+    <!-- 选择商品 -->
+    <view class="form-group">
+      <view class="form-label">商品</view>
+      <view class="form-input selector" bindtap="onSelectProduct">
+        <text wx:if="{{selectedProduct}}">🥬 {{selectedProduct.name}}（当前库存:{{selectedProduct.stock}}{{selectedProduct.unit}}）</text>
+        <text wx:else class="text-muted">点击选择商品</text>
+      </view>
+    </view>
+
+    <view class="form-group flex-row">
+      <view style="flex:1; margin-right:20rpx">
+        <view class="form-label">进货数量</view>
+        <input class="form-input" type="digit" placeholder="数量" value="{{quantity}}"
+               bindinput="onQuantityInput" />
+      </view>
+      <view style="flex:1">
+        <view class="form-label">进价（元/{{selectedProduct ? selectedProduct.unit : '单位'}}）</view>
+        <input class="form-input" type="digit" placeholder="进价" value="{{costPrice}}"
+               bindinput="onCostPriceInput" />
+      </view>
+    </view>
+
+    <view class="amount-display" wx:if="{{calculatedTotal !== '0.00'}}">
+      <text class="text-muted">总成本：</text>
+      <text class="text-xl text-bold text-danger">¥{{calculatedTotal}}</text>
+    </view>
+
+    <view class="form-group mt-20">
+      <view class="form-label">批发市场</view>
+      <input class="form-input" placeholder="如：城南批发市场" value="{{market}}"
+             data-field="market" bindinput="onFieldChange" />
+    </view>
+
+    <view class="form-group">
+      <view class="form-label">备注</view>
+      <input class="form-input" placeholder="选填" value="{{remark}}"
+             data-field="remark" bindinput="onFieldChange" />
+    </view>
+
+    <button class="btn-primary" style="width:100%; margin-top:30rpx" bindtap="confirmPurchase">
+      确认进货
+    </button>
+  </view>
+
+  <!-- 商品选择器 -->
+  <view class="picker-overlay" wx:if="{{showProductPicker}}" bindtap="closePicker">
+    <view class="picker-content" catchtap="">
+      <view class="picker-header flex-between">
+        <text class="text-bold">选择商品</text>
+        <text class="text-primary" bindtap="closePicker">关闭</text>
+      </view>
+      <scroll-view scroll-y class="picker-body">
+        <view class="picker-item flex-between" wx:for="{{products}}" wx:key="id"
+              bindtap="onProductTap" data-id="{{item.id}}">
+          <view>
+            <text class="text-bold">{{item.name}}</text>
+            <text class="text-sm text-muted ml-10">{{util.priceTypeText(item.priceType)}}</text>
+          </view>
+          <view>
+            <text class="text-sm text-muted">库存:{{item.stock}}{{item.unit}}</text>
+            <text class="text-sm text-muted ml-10">进价:¥{{item.costPrice}}</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 今日进货记录 -->
+  <view class="card mt-20" wx:if="{{recentPurchases.length > 0}}">
+    <view class="section-title mb-20">今日进货</view>
+    <view class="record-item flex-between" wx:for="{{recentPurchases}}" wx:key="id">
+      <text>商品ID:{{item.productId}} ×{{item.quantity}}</text>
+      <text>¥{{util.formatMoney(item.totalCost)}}</text>
+    </view>
+  </view>
+</view>

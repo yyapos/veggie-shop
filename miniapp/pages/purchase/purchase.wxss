@@ -1,0 +1,2 @@
+/* uses shared styles from app.wxss and sale.wxss */
+@import '../sale/sale.wxss';

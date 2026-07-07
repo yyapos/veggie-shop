@@ -1,0 +1,7 @@
+.debtor-item {
+  min-height: 120rpx;
+}
+
+.debtor-item .text-center {
+  flex: 1;
+}

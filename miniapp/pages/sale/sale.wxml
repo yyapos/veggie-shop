@@ -1,0 +1,109 @@
+<!-- 销售记账 -->
+<view class="container">
+  <!-- 今日统计 -->
+  <view class="stats-bar card flex-between" wx:if="{{todayStats}}">
+    <view class="text-center">
+      <view class="text-lg text-bold text-primary">¥{{util.formatMoney(todayStats.totalSales)}}</view>
+      <view class="text-sm text-muted">今日销售额</view>
+    </view>
+    <view class="text-center">
+      <view class="text-lg text-bold">{{todayStats.orderCount}}</view>
+      <view class="text-sm text-muted">订单数</view>
+    </view>
+    <view class="text-center">
+      <view class="text-lg text-bold">¥{{util.formatMoney(todayStats.cashSales)}}</view>
+      <view class="text-sm text-muted">现金</view>
+    </view>
+  </view>
+
+  <!-- 销售表单 -->
+  <view class="card">
+    <view class="section-title mb-20">新增销售</view>
+
+    <!-- 选择商品 -->
+    <view class="form-group">
+      <view class="form-label">商品</view>
+      <view class="form-input selector" bindtap="onSelectProduct">
+        <text wx:if="{{selectedProduct}}">🥬 {{selectedProduct.name}} - ¥{{selectedProduct.price}}/{{selectedProduct.unit}}</text>
+        <text wx:else class="text-muted">点击选择商品</text>
+      </view>
+    </view>
+
+    <!-- 输入数量 -->
+    <view class="form-group" wx:if="{{selectedProduct}}">
+      <view class="form-label">数量（{{selectedProduct.unit}}）</view>
+      <input class="form-input" type="digit" placeholder="请输入数量" value="{{quantity}}"
+             bindinput="onQuantityInput" focus="{{!!selectedProduct}}" />
+    </view>
+
+    <!-- 计算结果 -->
+    <view class="amount-display" wx:if="{{calculatedAmount !== '0.00'}}">
+      <text class="text-muted">应收金额：</text>
+      <text class="text-xl text-bold text-primary">¥{{calculatedAmount}}</text>
+    </view>
+
+    <!-- 收款方式 -->
+    <view class="form-group mt-20">
+      <view class="form-label">收款方式</view>
+      <view class="flex-row">
+        <view class="type-btn {{saleType === 'CASH' ? 'active' : ''}}" bindtap="onSaleTypeChange" data-type="CASH">
+          💵 现金
+        </view>
+        <view class="type-btn {{saleType === 'DEBT' ? 'active' : ''}}" bindtap="onSaleTypeChange" data-type="DEBT">
+          📝 赊账
+        </view>
+      </view>
+    </view>
+
+    <!-- 赊账人选择 -->
+    <view class="form-group" wx:if="{{saleType === 'DEBT'}}">
+      <view class="form-label">赊账人</view>
+      <picker mode="selector" range="{{debtors}}" range-key="name" bindchange="onDebtorChange">
+        <view class="form-input selector">
+          <text wx:if="{{debtorId}}">已选择</text>
+          <text wx:else class="text-muted">请选择赊账人</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 确认按钮 -->
+    <button class="btn-primary" style="width:100%; margin-top:30rpx" bindtap="confirmSale"
+            disabled="{{!selectedProduct || !quantity}}">
+      确认收款 ¥{{calculatedAmount}}
+    </button>
+  </view>
+
+  <!-- 商品选择弹窗 -->
+  <view class="picker-overlay" wx:if="{{showProductPicker}}" bindtap="closePicker">
+    <view class="picker-content" catchtap="">
+      <view class="picker-header flex-between">
+        <text class="text-bold">选择商品</text>
+        <text class="text-primary" bindtap="closePicker">关闭</text>
+      </view>
+      <scroll-view scroll-y class="picker-body">
+        <view class="picker-item" wx:for="{{products}}" wx:key="id" bindtap="onProductTap" data-id="{{item.id}}">
+          <view class="flex-between">
+            <view>
+              <text class="text-bold">{{item.name}}</text>
+              <text class="tag tag-info ml-10">{{util.priceTypeText(item.priceType)}}</text>
+            </view>
+            <view>
+              <text class="text-primary">¥{{item.price}}/{{item.unit}}</text>
+              <text class="text-sm text-muted ml-10">库存:{{item.stock}}</text>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 最近销售记录 -->
+  <view class="card mt-20" wx:if="{{recentSales.length > 0}}">
+    <view class="section-title mb-20">今日记录</view>
+    <view class="record-item flex-between" wx:for="{{recentSales}}" wx:key="id">
+      <text>{{index + 1}}. 商品ID:{{item.productId}}</text>
+      <text class="text-primary">¥{{util.formatMoney(item.totalAmount)}}</text>
+      <text class="text-sm text-muted">{{item.saleType === 'CASH' ? '现金' : '赊账'}}</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,59 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/product/product",
+    "pages/product/detail",
+    "pages/sale/sale",
+    "pages/purchase/purchase",
+    "pages/debtor/debtor",
+    "pages/debtor/detail",
+    "pages/dashboard/dashboard"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#07c160",
+    "navigationBarTitleText": "蔬菜店管理",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f5f5f5"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#07c160",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/tab-home.png",
+        "selectedIconPath": "images/tab-home-active.png"
+      },
+      {
+        "pagePath": "pages/product/product",
+        "text": "商品",
+        "iconPath": "images/tab-product.png",
+        "selectedIconPath": "images/tab-product-active.png"
+      },
+      {
+        "pagePath": "pages/sale/sale",
+        "text": "记账",
+        "iconPath": "images/tab-sale.png",
+        "selectedIconPath": "images/tab-sale-active.png"
+      },
+      {
+        "pagePath": "pages/debtor/debtor",
+        "text": "赊账",
+        "iconPath": "images/tab-debt.png",
+        "selectedIconPath": "images/tab-debt-active.png"
+      },
+      {
+        "pagePath": "pages/dashboard/dashboard",
+        "text": "看板",
+        "iconPath": "images/tab-dash.png",
+        "selectedIconPath": "images/tab-dash-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

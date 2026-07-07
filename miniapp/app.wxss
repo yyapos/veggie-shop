@@ -1,0 +1,122 @@
+/**app.wxss**/
+page {
+  background-color: #f5f5f5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 28rpx;
+  color: #333333;
+}
+
+.container {
+  padding: 20rpx;
+}
+
+/* 通用卡片样式 */
+.card {
+  background: #ffffff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.06);
+}
+
+/* 通用按钮 */
+.btn-primary {
+  background-color: #07c160;
+  color: #ffffff;
+  border: none;
+  border-radius: 8rpx;
+  padding: 16rpx 32rpx;
+  font-size: 30rpx;
+}
+
+.btn-danger {
+  background-color: #fa5151;
+  color: #ffffff;
+  border: none;
+  border-radius: 8rpx;
+  padding: 16rpx 32rpx;
+  font-size: 30rpx;
+}
+
+.btn-default {
+  background-color: #f5f5f5;
+  color: #333333;
+  border: 1rpx solid #dcdcdc;
+  border-radius: 8rpx;
+  padding: 16rpx 32rpx;
+  font-size: 30rpx;
+}
+
+/* 通用表单 */
+.form-group {
+  margin-bottom: 24rpx;
+}
+
+.form-label {
+  display: block;
+  font-size: 28rpx;
+  color: #666666;
+  margin-bottom: 12rpx;
+}
+
+.form-input {
+  width: 100%;
+  height: 80rpx;
+  background: #f8f8f8;
+  border-radius: 8rpx;
+  padding: 0 20rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+
+/* Flex 布局 */
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 文字样式 */
+.text-primary { color: #07c160; }
+.text-danger { color: #fa5151; }
+.text-warning { color: #ffc300; }
+.text-muted { color: #999999; }
+.text-right { text-align: right; }
+.text-center { text-align: center; }
+
+.text-sm { font-size: 24rpx; }
+.text-lg { font-size: 36rpx; }
+.text-xl { font-size: 44rpx; }
+.text-bold { font-weight: bold; }
+
+/* 间距 */
+.mt-10 { margin-top: 10rpx; }
+.mt-20 { margin-top: 20rpx; }
+.mt-30 { margin-top: 30rpx; }
+.mb-10 { margin-bottom: 10rpx; }
+.mb-20 { margin-bottom: 20rpx; }
+.mr-10 { margin-right: 10rpx; }
+.mr-20 { margin-right: 20rpx; }
+
+/* 标签 */
+.tag {
+  display: inline-block;
+  padding: 4rpx 16rpx;
+  border-radius: 6rpx;
+  font-size: 22rpx;
+}
+.tag-success { background: #e8f8ee; color: #07c160; }
+.tag-danger { background: #fde8e8; color: #fa5151; }
+.tag-warning { background: #fff8e8; color: #e6a23c; }
+.tag-info { background: #e8f0fe; color: #1890ff; }

@@ -1,0 +1,72 @@
+<!-- 数据看板 -->
+<view class="container">
+  <!-- 今日核心指标 -->
+  <view class="overview-section">
+    <view class="section-title" style="color:rgba(255,255,255,0.8)">今日经营数据</view>
+    <view class="overview-grid">
+      <view class="overview-item">
+        <view class="overview-value">¥{{util.formatMoney(todayStats ? todayStats.totalSales : 0)}}</view>
+        <view class="overview-label">销售额</view>
+      </view>
+      <view class="overview-item">
+        <view class="overview-value">{{todayStats ? todayStats.orderCount : 0}}</view>
+        <view class="overview-label">订单数</view>
+      </view>
+      <view class="overview-item">
+        <view class="overview-value">¥{{util.formatMoney(today ? today.totalProfit : 0)}}</view>
+        <view class="overview-label">利润</view>
+      </view>
+      <view class="overview-item">
+        <view class="overview-value">¥{{util.formatMoney(today ? today.totalDebt : 0)}}</view>
+        <view class="overview-label">赊账</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 时间维度切换 -->
+  <view class="card">
+    <view class="flex-row" style="justify-content:space-around">
+      <view class="period-tab {{period === 'today' ? 'active' : ''}}" bindtap="switchPeriod" data-period="today">
+        今日
+      </view>
+      <view class="period-tab {{period === 'week' ? 'active' : ''}}" bindtap="switchPeriod" data-period="week">
+        本周
+      </view>
+      <view class="period-tab {{period === 'month' ? 'active' : ''}}" bindtap="switchPeriod" data-period="month">
+        本月
+      </view>
+    </view>
+
+    <!-- 趋势数据 -->
+    <view class="mt-20">
+      <view wx:if="{{weekTrend.length > 0}}">
+        <view class="trend-item flex-between" wx:for="{{weekTrend}}" wx:key="id">
+          <text class="text-sm">{{item.summaryDate}}</text>
+          <text class="text-primary">¥{{util.formatMoney(item.totalSales)}}</text>
+          <text>{{item.orderCount}}单</text>
+          <text class="{{item.totalProfit >= 0 ? 'text-primary' : 'text-danger'}}">
+            ¥{{util.formatMoney(item.totalProfit)}}
+          </text>
+        </view>
+      </view>
+      <view wx:else class="text-center text-muted py-40">
+        {{period === 'today' ? '今日数据加载中...' : '暂无趋势数据'}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 今日分类统计 -->
+  <view class="card mt-20">
+    <view class="section-title mb-20">销售构成</view>
+    <view class="flex-between" wx:if="{{todayStats}}">
+      <view class="text-center" style="flex:1">
+        <view class="text-lg text-bold text-primary">¥{{util.formatMoney(todayStats.cashSales)}}</view>
+        <view class="text-sm text-muted">现金收入</view>
+      </view>
+      <view class="text-center" style="flex:1">
+        <view class="text-lg text-bold text-danger">¥{{util.formatMoney(todayStats.debtSales)}}</view>
+        <view class="text-sm text-muted">赊账金额</view>
+      </view>
+    </view>
+  </view>
+</view>

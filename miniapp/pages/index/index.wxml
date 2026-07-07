@@ -1,0 +1,63 @@
+<!-- 首页 - 经营概览 -->
+<view class="container">
+  <!-- 今日概览卡片 -->
+  <view class="overview-section">
+    <view class="section-title">今日概览</view>
+    <view class="overview-grid">
+      <view class="overview-item">
+        <view class="overview-value text-primary">{{util.formatMoney(todayStats.totalSales || 0)}}</view>
+        <view class="overview-label">销售额(元)</view>
+      </view>
+      <view class="overview-item">
+        <view class="overview-value text-danger">{{util.formatMoney(todayStats.debtSales || 0)}}</view>
+        <view class="overview-label">赊账(元)</view>
+      </view>
+      <view class="overview-item">
+        <view class="overview-value">{{todayStats.orderCount || 0}}</view>
+        <view class="overview-label">订单数</view>
+      </view>
+      <view class="overview-item">
+        <view class="overview-value">{{util.formatMoney(today.totalProfit || 0)}}</view>
+        <view class="overview-label">利润(元)</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 快捷入口 -->
+  <view class="quick-actions card">
+    <view class="section-title mb-20">快捷操作</view>
+    <view class="action-grid">
+      <view class="action-item" bindtap="goSale">
+        <view class="action-icon">💰</view>
+        <view class="action-text">销售记账</view>
+      </view>
+      <view class="action-item" bindtap="goPurchase">
+        <view class="action-icon">📦</view>
+        <view class="action-text">进货管理</view>
+      </view>
+      <view class="action-item" bindtap="goDebtor">
+        <view class="action-icon">📝</view>
+        <view class="action-text">赊账管理</view>
+      </view>
+      <view class="action-item" bindtap="goDashboard">
+        <view class="action-icon">📈</view>
+        <view class="action-text">数据看板</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 库存预警 -->
+  <view class="card" wx:if="{{warningProducts.length > 0}}">
+    <view class="flex-between mb-20">
+      <view class="section-title">⚠️ 库存预警</view>
+      <view class="text-sm text-muted" bindtap="goProduct">查看全部 ›</view>
+    </view>
+    <view class="warning-item flex-between" wx:for="{{warningProducts}}" wx:key="id">
+      <view>
+        <text class="text-bold">{{item.name}}</text>
+        <text class="text-sm text-muted ml-10">{{util.priceTypeText(item.priceType)}}</text>
+      </view>
+      <view class="text-danger text-bold">剩{{item.stock}}{{item.unit}}</view>
+    </view>
+  </view>
+</view>

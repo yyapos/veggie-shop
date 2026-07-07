@@ -1,0 +1,25 @@
+.period-tab {
+  padding: 14rpx 40rpx;
+  border-radius: 30rpx;
+  background: #f5f5f5;
+  color: #666;
+  font-size: 28rpx;
+}
+
+.period-tab.active {
+  background: #07c160;
+  color: #fff;
+}
+
+.trend-item {
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #f8f8f8;
+}
+
+.trend-item:last-child {
+  border-bottom: none;
+}
+
+.py-40 {
+  padding: 40rpx 0;
+}

@@ -1,0 +1,65 @@
+<!-- 商品详情/编辑 -->
+<view class="container">
+  <view class="card">
+    <view class="form-group">
+      <view class="form-label">商品名称 *</view>
+      <input class="form-input" placeholder="如：大白菜" value="{{form.name}}"
+             data-field="name" bindinput="onFieldChange" />
+    </view>
+
+    <view class="form-group">
+      <view class="form-label">分类 *</view>
+      <picker mode="selector" range="{{categories}}" range-key="name" bindchange="onCategoryChange">
+        <view class="form-input" style="line-height:80rpx">
+          {{categories[form.categoryId] ? '已选择' : '请选择分类'}}
+        </view>
+      </picker>
+    </view>
+
+    <view class="form-group">
+      <view class="form-label">计价方式</view>
+      <picker mode="selector" range="{{priceTypes}}" range-key="label" bindchange="onPriceTypeChange">
+        <view class="form-input" style="line-height:80rpx">
+          {{priceTypes.find(p => p.value === form.priceType).label || '请选择'}}
+        </view>
+      </picker>
+    </view>
+
+    <view class="form-group flex-row">
+      <view style="flex:1; margin-right:20rpx">
+        <view class="form-label">售价 *</view>
+        <input class="form-input" type="digit" placeholder="0.00" value="{{form.price}}"
+               data-field="price" bindinput="onFieldChange" />
+      </view>
+      <view style="flex:1">
+        <view class="form-label">进价</view>
+        <input class="form-input" type="digit" placeholder="0.00" value="{{form.costPrice}}"
+               data-field="costPrice" bindinput="onFieldChange" />
+      </view>
+    </view>
+
+    <view class="form-group flex-row">
+      <view style="flex:1; margin-right:20rpx">
+        <view class="form-label">库存</view>
+        <input class="form-input" type="digit" placeholder="0" value="{{form.stock}}"
+               data-field="stock" bindinput="onFieldChange" />
+      </view>
+      <view style="flex:1">
+        <view class="form-label">单位</view>
+        <picker mode="selector" range="{{units}}" bindchange="onUnitChange">
+          <view class="form-input" style="line-height:80rpx">{{form.unit}}</view>
+        </picker>
+      </view>
+    </view>
+
+    <view class="form-group">
+      <view class="form-label">低库存预警阈值</view>
+      <input class="form-input" type="digit" placeholder="10" value="{{form.warningStock}}"
+             data-field="warningStock" bindinput="onFieldChange" />
+    </view>
+  </view>
+
+  <button class="btn-primary" style="width:100%; margin-top:30rpx" bindtap="onSave">
+    {{isEdit ? '保存修改' : '添加商品'}}
+  </button>
+</view>
