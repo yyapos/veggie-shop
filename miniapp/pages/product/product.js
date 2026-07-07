@@ -10,6 +10,7 @@ Page({
     showForm: false,
     isEdit: false,
     form: { id: null, name: '', parentId: 0 },
+    catIcons: { '蔬菜':'🥬', '水果':'🍎', '粮油调料':'🧂', '叶菜类':'🥗', '根茎类':'🥔', '茄果类':'🍅', '瓜类':'🥒', '浆果类':'🍓', '柑橘类':'🍊', '热带水果':'🥭' },
     showProducts: false,   // 是否显示商品列表（叶子节点）
     currentCategoryId: null,
     currentCategoryName: '',

@@ -1,7 +1,7 @@
 <view class="container">
   <!-- 面包屑导航 -->
   <view class="breadcrumb" wx:if="{{parentId > 0 || breadcrumb.length > 0}}">
-    <text class="bc-item" bindtap="tapBreadcrumb" data-index="-1">全部</text>
+    <text class="bc-item" bindtap="tapBreadcrumb" data-index="-1">🏠 全部分类</text>
     <block wx:for="{{breadcrumb}}" wx:key="id" wx:for-index="idx">
       <text class="bc-sep">›</text>
       <text class="bc-item" bindtap="tapBreadcrumb" data-index="{{idx}}">{{item.name}}</text>
@@ -13,17 +13,20 @@
   <!-- 商品列表模式 -->
   <block wx:if="{{showProducts}}">
     <view class="flex-between mb-15">
-      <text class="text-bold text-lg">{{currentCategoryName}} - 商品列表</text>
-      <button class="btn-sm btn-cancel" bindtap="hideProducts">返回分类</button>
+      <text class="text-bold text-lg">📦 {{currentCategoryName}}</text>
+      <button class="btn-sm btn-cancel" bindtap="hideProducts">← 返回</button>
     </view>
 
     <view class="card product-item" wx:for="{{products}}" wx:key="id">
       <view class="flex-between">
         <view class="flex-col" style="flex:1">
           <text class="text-bold">{{item.name}}</text>
-          <text class="tag">{{item.priceTypeText}}</text>
-          <text class="text-sm text-muted mt-5">库存 {{item.stock}}{{item.unit}} | ¥{{item.formattedPrice}}/{{item.unit}}</text>
+          <view class="flex-row mt-5">
+            <text class="tag">{{item.priceTypeText}}</text>
+            <text class="text-sm text-muted">库存 {{item.stock}}{{item.unit}}</text>
+          </view>
         </view>
+        <text class="price">¥{{item.formattedPrice}}</text>
       </view>
     </view>
 
@@ -35,44 +38,46 @@
     </view>
     <view wx:if="{{loading}}" class="text-center mt-20"><text class="text-muted">加载中...</text></view>
     <view wx:if="{{!loading && products.length === 0}}" class="text-center mt-30">
-      <text class="text-muted">该分类下暂无商品</text>
+      <text class="text-muted">该分类下暂无商品，去添加吧</text>
     </view>
   </block>
 
   <!-- 分类列表模式 -->
   <block wx:else>
-    <view class="card category-card" wx:for="{{categories}}" wx:key="id">
-      <view class="flex-between">
-        <view class="flex-col" style="flex:1">
-          <view class="flex-row">
-            <text class="cat-name">{{item.name}}</text>
-            <text class="cat-count" wx:if="{{item.children && item.children.length}}">{{item.children.length}}个子分类</text>
-          </view>
+    <!-- 分类网格 -->
+    <view class="cat-grid">
+      <view class="cat-card" wx:for="{{categories}}" wx:key="id">
+        <!-- 点击主体 → 查看子分类 -->
+        <view class="cat-body" bindtap="tapCategory" data-id="{{item.id}}" data-name="{{item.name}}">
+          <view class="cat-icon">{{catIcons[item.name] || '📋'}}</view>
+          <text class="cat-title">{{item.name}}</text>
+          <text class="cat-desc" wx:if="{{item.children && item.children.length}}">{{item.children.length}}个子分类</text>
         </view>
-        <view class="btn-group">
-          <button class="btn-sm btn-primary" size="mini" bindtap="viewProducts" data-id="{{item.id}}" data-name="{{item.name}}">查看商品</button>
-          <button class="btn-sm" size="mini" bindtap="tapCategory" data-id="{{item.id}}" data-name="{{item.name}}">子分类</button>
-          <button class="btn-sm" size="mini" bindtap="showEdit" data-id="{{item.id}}" data-name="{{item.name}}">编辑</button>
-          <button class="btn-sm" size="mini" bindtap="deleteCategory" data-id="{{item.id}}" data-name="{{item.name}}" style="background:#fa5151;color:#fff">删除</button>
+        <!-- 操作按钮 -->
+        <view class="cat-actions">
+          <button class="btn-sm btn-primary" size="mini" bindtap="viewProducts" data-id="{{item.id}}" data-name="{{item.name}}">商品</button>
+          <button class="btn-sm btn-edit" size="mini" bindtap="showEdit" data-id="{{item.id}}" data-name="{{item.name}}">编辑</button>
+          <button class="btn-sm btn-del" size="mini" bindtap="deleteCategory" data-id="{{item.id}}" data-name="{{item.name}}">删除</button>
         </view>
       </view>
     </view>
 
-    <view wx:if="{{categories.length === 0}}" class="text-center mt-30">
-      <text class="text-muted">暂无分类，请添加</text>
+    <view wx:if="{{categories.length === 0}}" class="empty-state">
+      <text class="empty-icon">📂</text>
+      <text class="text-muted">还没有分类，点击下方添加</text>
     </view>
 
-    <button class="btn-primary mt-20" style="width:100%" bindtap="showAdd" data-parent-id="{{parentId}}">+ 添加分类</button>
+    <button class="btn-add" bindtap="showAdd" data-parent-id="{{parentId}}">+ 添加分类</button>
   </block>
 
   <!-- 新增/编辑弹窗 -->
   <view class="modal" wx:if="{{showForm}}" catchtap="hideForm">
     <view class="modal-content" catchtap="">
       <view class="card">
-        <view class="text-bold text-lg mb-20">{{isEdit ? '编辑分类' : '新增分类'}}</view>
+        <view class="text-bold text-lg mb-20">{{isEdit ? '✏️ 编辑分类' : '➕ 新增分类'}}</view>
         <view class="form-group">
           <view class="form-label">分类名称</view>
-          <input class="field-input" value="{{form.name}}" bindinput="onNameInput" placeholder="请输入" />
+          <input class="field-input" value="{{form.name}}" bindinput="onNameInput" placeholder="请输入分类名称" />
         </view>
         <view class="flex-between mt-20">
           <button class="btn-cancel" bindtap="hideForm">取消</button>
