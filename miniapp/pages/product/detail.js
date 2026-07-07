@@ -17,6 +17,7 @@ Page({
       status: 1
     },
     categories: [],
+    priceTypeLabel: '按斤',
     priceTypes: [
       { value: 'PRICE_WEIGHT', label: '按斤' },
       { value: 'PRICE_PER', label: '按份' },
@@ -43,14 +44,21 @@ Page({
     } catch (e) { /* ignore */ }
   },
 
+  getPriceTypeLabel(value) {
+    const t = this.data.priceTypes.find(p => p.value === value);
+    return t ? t.label : '按斤';
+  },
+
   async loadProduct(id) {
     try {
       const product = await api.getProductById(id);
+      const pt = product.priceType || 'PRICE_WEIGHT';
       this.setData({
+        priceTypeLabel: this.getPriceTypeLabel(pt),
         form: {
           name: product.name || '',
           categoryId: product.categoryId,
-          priceType: product.priceType || 'PRICE_WEIGHT',
+          priceType: pt,
           price: String(product.price || ''),
           costPrice: String(product.costPrice || ''),
           stock: String(product.stock || ''),
@@ -78,7 +86,8 @@ Page({
 
   // 选择计价方式
   onPriceTypeChange(e) {
-    this.setData({ 'form.priceType': this.data.priceTypes[e.detail.value].value });
+    const pt = this.data.priceTypes[e.detail.value];
+    this.setData({ 'form.priceType': pt.value, priceTypeLabel: pt.label });
   },
 
   // 选择单位

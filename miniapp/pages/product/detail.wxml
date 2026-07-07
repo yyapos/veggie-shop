@@ -20,7 +20,7 @@
       <view class="form-label">计价方式</view>
       <picker mode="selector" range="{{priceTypes}}" range-key="label" bindchange="onPriceTypeChange">
         <view class="form-input" style="line-height:80rpx">
-          {{priceTypes.find(p => p.value === form.priceType).label || '请选择'}}
+          {{priceTypeLabel || '请选择'}}
         </view>
       </picker>
     </view>
