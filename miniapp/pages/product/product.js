@@ -30,10 +30,13 @@ Page({
   },
 
   onReachBottom() {
-    if (this.data.hasMore && !this.data.loading) {
-      this.setData({ page: this.data.page + 1 });
-      this.loadProducts();
-    }
+    this.loadMore();
+  },
+
+  loadMore() {
+    if (!this.data.hasMore || this.data.loading) return;
+    const next = this.data.page + 1;
+    this.setData({ page: next }, () => this.loadProducts());
   },
 
   // 加载分类

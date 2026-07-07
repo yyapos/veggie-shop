@@ -46,8 +46,11 @@
     <view wx:if="{{loading}}" class="text-center mt-30">
       <text class="text-muted">加载中...</text>
     </view>
+    <view wx:if="{{hasMore && !loading}}" class="text-center mt-30" bindtap="loadMore">
+      <button class="btn-primary" size="mini">加载更多 ({{page}}/{{totalPages}})</button>
+    </view>
     <view wx:if="{{!hasMore && products.length > 0}}" class="text-center mt-30">
-      <text class="text-muted">共 {{total}} 条，第 {{page}}/{{totalPages}} 页</text>
+      <text class="text-muted">共 {{total}} 条，已全部加载</text>
     </view>
     <view wx:if="{{!loading && products.length === 0}}" class="text-center mt-30">
       <text class="text-muted">暂无商品，点击右下角 + 添加</text>
