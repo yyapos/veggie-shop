@@ -23,6 +23,9 @@ public class Category extends BaseEntity {
     @Schema(description = "分类名称", example = "蔬菜")
     private String name;
 
+    @Schema(description = "图标emoji", example = "🥬")
+    private String icon;
+
     @Schema(description = "父级分类ID，0为顶级", example = "0")
     private Long parentId;
 

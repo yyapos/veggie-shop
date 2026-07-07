@@ -5,7 +5,7 @@
       <text class="text-bold">{{item.name}}</text>
       <view>
         <button size="mini" bindtap="showAdd" data-parent-id="{{item.id}}">+子分类</button>
-        <button size="mini" bindtap="showEdit" data-id="{{item.id}}" data-name="{{item.name}}" data-parent-id="{{item.parentId}}">编辑</button>
+        <button size="mini" bindtap="showEdit" data-id="{{item.id}}" data-name="{{item.name}}" data-parentid="{{item.parentId}}" data-icon="{{item.icon}}">编辑</button>
         <button size="mini" type="warn" bindtap="deleteCategory" data-id="{{item.id}}" data-name="{{item.name}}">删除</button>
       </view>
     </view>
@@ -14,7 +14,7 @@
       <view class="flex-between sub-item" wx:for="{{item.children}}" wx:key="id" wx:for-item="child">
         <text class="text-muted">├ {{child.name}}</text>
         <view>
-          <button size="mini" bindtap="showEdit" data-id="{{child.id}}" data-name="{{child.name}}" data-parent-id="{{child.parentId}}">编辑</button>
+          <button size="mini" bindtap="showEdit" data-id="{{child.id}}" data-name="{{child.name}}" data-parentid="{{child.parentId}}" data-icon="{{child.icon}}">编辑</button>
           <button size="mini" type="warn" bindtap="deleteCategory" data-id="{{child.id}}" data-name="{{child.name}}">删除</button>
         </view>
       </view>
@@ -31,6 +31,12 @@
         <view class="form-group">
           <view class="form-label">分类名称</view>
           <input class="form-input" value="{{form.name}}" bindinput="onNameInput" placeholder="请输入分类名称" />
+        </view>
+        <view class="form-group">
+          <view class="form-label">图标 <text class="form-icon-preview">{{form.icon || '未选'}}</text></view>
+          <view class="emoji-grid">
+            <view class="emoji-item {{form.icon === item ? 'emoji-selected' : ''}}" wx:for="{{emojis}}" wx:key="*this" bindtap="onSelectIcon" data-icon="{{item}}">{{item}}</view>
+          </view>
         </view>
         <view class="form-group">
           <view class="form-label">父级分类</view>

@@ -84,3 +84,19 @@ button { border-radius: 10rpx; font-size: 24rpx; line-height: 1.4; }
 .form-group { margin-bottom: 20rpx; }
 .form-label { font-size: 28rpx; color: #666; margin-bottom: 8rpx; }
 .field-input { width: 100%; height: 72rpx; background: #f7f7f7; border-radius: 12rpx; padding: 0 20rpx; font-size: 28rpx; box-sizing: border-box; }
+
+/* 表情选择器 */
+.form-icon-preview { font-size: 36rpx; margin-left: 10rpx; }
+.emoji-grid { display: flex; flex-wrap: wrap; gap: 12rpx; }
+.emoji-item {
+  width: 64rpx; height: 64rpx;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36rpx;
+  background: #f7f7f7;
+  border-radius: 12rpx;
+  border: 2rpx solid transparent;
+}
+.emoji-selected {
+  background: #e8f8ef;
+  border-color: #07c160;
+}

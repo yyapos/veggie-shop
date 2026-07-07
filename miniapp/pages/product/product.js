@@ -9,8 +9,8 @@ Page({
     breadcrumb: [],        // 面包屑导航
     showForm: false,
     isEdit: false,
-    form: { id: null, name: '', parentId: 0 },
-    catIcons: { '蔬菜':'🥬', '水果':'🍎', '粮油调料':'🧂', '叶菜类':'🥗', '根茎类':'🥔', '茄果类':'🍅', '瓜类':'🥒', '浆果类':'🍓', '柑橘类':'🍊', '热带水果':'🥭' },
+    form: { id: null, name: '', parentId: 0, icon: '' },
+    emojis: ['🥬','🥒','🍅','🥔','🧅','🥕','🌽','🍆','🥦','🍄','🧄','🥜','🍎','🍊','🍋','🍇','🍓','🍑','🥭','🍌','🧂','🍚','🍞','🥛','🧃','🥫','📦'],
     showProducts: false,   // 是否显示商品列表（叶子节点）
     currentCategoryId: null,
     currentCategoryName: '',
@@ -132,12 +132,12 @@ Page({
   // ---- 分类管理 ----
   showAdd(e) {
     const pid = e.currentTarget.dataset.parentId || this.data.parentId;
-    this.setData({ showForm: true, isEdit: false, form: { id: null, name: '', parentId: pid } });
+    this.setData({ showForm: true, isEdit: false, form: { id: null, name: '', parentId: pid, icon: '' } });
   },
 
   showEdit(e) {
-    const { id, name } = e.currentTarget.dataset;
-    this.setData({ showForm: true, isEdit: true, form: { id, name, parentId: this.data.parentId } });
+    const { id, name, icon } = e.currentTarget.dataset;
+    this.setData({ showForm: true, isEdit: true, form: { id, name, parentId: this.data.parentId, icon: icon || '' } });
   },
 
   onNameInput(e) { this.setData({ 'form.name': e.detail.value }); },
@@ -147,14 +147,19 @@ Page({
     if (!f.name.trim()) { util.toast('请输入名称'); return; }
     try {
       if (this.data.isEdit) {
-        await api.updateCategory({ id: f.id, name: f.name, parentId: f.parentId });
+        await api.updateCategory({ id: f.id, name: f.name, parentId: f.parentId, icon: f.icon });
       } else {
-        await api.addCategory({ name: f.name, parentId: f.parentId });
+        await api.addCategory({ name: f.name, parentId: f.parentId, icon: f.icon });
       }
       util.toast('保存成功', 'success');
       this.setData({ showForm: false });
       this.loadCategories();
     } catch (e) { /* handled */ }
+  },
+
+  onSelectIcon(e) {
+    const icon = e.currentTarget.dataset.icon;
+    this.setData({ 'form.icon': icon });
   },
 
   async deleteCategory(e) {

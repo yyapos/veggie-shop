@@ -6,8 +6,9 @@ Page({
     categories: [],
     showForm: false,
     isEdit: false,
-    form: { id: null, name: '', parentId: 0 },
-    parentOptions: []
+    form: { id: null, name: '', parentId: 0, icon: '' },
+    parentOptions: [],
+    emojis: ['🥬','🥒','🍅','🥔','🧅','🥕','🌽','🍆','🥦','🍄','🧄','🥜','🍎','🍊','🍋','🍇','🍓','🍑','🥭','🍌','🧂','🍚','🍞','🥛','🧃','🥫','📦']
   },
 
   onShow() {
@@ -39,16 +40,16 @@ Page({
     this.setData({
       showForm: true,
       isEdit: false,
-      form: { id: null, name: '', parentId: parentId || 0 }
+      form: { id: null, name: '', parentId: parentId || 0, icon: '' }
     });
   },
 
   showEdit(e) {
-    const { id, name, parentId } = e.currentTarget.dataset;
+    const { id, name, parentid, icon } = e.currentTarget.dataset;
     this.setData({
       showForm: true,
       isEdit: true,
-      form: { id, name, parentId: parentId || 0 }
+      form: { id, name, parentId: parentid || 0, icon: icon || '' }
     });
   },
 
@@ -62,18 +63,23 @@ Page({
   },
 
   async saveCategory() {
-    const { id, name, parentId } = this.data.form;
+    const { id, name, parentId, icon } = this.data.form;
     if (!name.trim()) { util.toast('请输入分类名称'); return; }
     try {
       if (this.data.isEdit) {
-        await api.updateCategory({ id, name, parentId });
+        await api.updateCategory({ id, name, parentId, icon });
       } else {
-        await api.addCategory({ name, parentId });
+        await api.addCategory({ name, parentId, icon });
       }
       util.toast('保存成功', 'success');
       this.setData({ showForm: false });
       this.loadCategories();
     } catch (e) { /* handled */ }
+  },
+
+  onSelectIcon(e) {
+    const icon = e.currentTarget.dataset.icon;
+    this.setData({ 'form.icon': icon });
   },
 
   async deleteCategory(e) {

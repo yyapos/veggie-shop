@@ -49,14 +49,14 @@
       <view class="cat-card" wx:for="{{categories}}" wx:key="id">
         <!-- 点击主体 → 查看子分类 -->
         <view class="cat-body" bindtap="tapCategory" data-id="{{item.id}}" data-name="{{item.name}}">
-          <view class="cat-icon">{{catIcons[item.name] || '📋'}}</view>
+          <view class="cat-icon">{{item.icon || '📋'}}</view>
           <text class="cat-title">{{item.name}}</text>
           <text class="cat-desc" wx:if="{{item.children && item.children.length}}">{{item.children.length}}个子分类</text>
         </view>
         <!-- 操作按钮 -->
         <view class="cat-actions">
           <button class="btn-sm btn-primary" size="mini" bindtap="viewProducts" data-id="{{item.id}}" data-name="{{item.name}}">商品</button>
-          <button class="btn-sm btn-edit" size="mini" bindtap="showEdit" data-id="{{item.id}}" data-name="{{item.name}}">编辑</button>
+          <button class="btn-sm btn-edit" size="mini" bindtap="showEdit" data-id="{{item.id}}" data-name="{{item.name}}" data-icon="{{item.icon}}">编辑</button>
           <button class="btn-sm btn-del" size="mini" bindtap="deleteCategory" data-id="{{item.id}}" data-name="{{item.name}}">删除</button>
         </view>
       </view>
@@ -78,6 +78,12 @@
         <view class="form-group">
           <view class="form-label">分类名称</view>
           <input class="field-input" value="{{form.name}}" bindinput="onNameInput" placeholder="请输入分类名称" />
+        </view>
+        <view class="form-group">
+          <view class="form-label">图标 <text class="form-icon-preview">{{form.icon || '未选'}}</text></view>
+          <view class="emoji-grid">
+            <view class="emoji-item {{form.icon === item ? 'emoji-selected' : ''}}" wx:for="{{emojis}}" wx:key="*this" bindtap="onSelectIcon" data-icon="{{item}}">{{item}}</view>
+          </view>
         </view>
         <view class="flex-between mt-20">
           <button class="btn-cancel" bindtap="hideForm">取消</button>

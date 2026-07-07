@@ -13,6 +13,7 @@ DROP TABLE IF EXISTS category;
 CREATE TABLE category (
     id          BIGINT          NOT NULL AUTO_INCREMENT  COMMENT '主键ID',
     name        VARCHAR(64)     NOT NULL                 COMMENT '分类名称',
+    icon        VARCHAR(10)     DEFAULT ''               COMMENT '图标emoji',
     parent_id   BIGINT          DEFAULT 0                COMMENT '父级分类ID，0为顶级',
     sort        INT             DEFAULT 0                COMMENT '排序值，越小越靠前',
     status      TINYINT         DEFAULT 1                COMMENT '状态：1启用 0禁用',
@@ -198,17 +199,17 @@ CREATE TABLE daily_summary (
 -- =============================================
 
 -- 商品分类
-INSERT INTO category (id, name, parent_id, sort, status) VALUES
-(1, '蔬菜', 0, 1, 1),
-(2, '水果', 0, 2, 1),
-(3, '粮油调料', 0, 3, 1),
-(4, '叶菜类', 1, 1, 1),
-(5, '根茎类', 1, 2, 1),
-(6, '茄果类', 1, 3, 1),
-(7, '瓜类', 1, 4, 1),
-(8, '浆果类', 2, 1, 1),
-(9, '柑橘类', 2, 2, 1),
-(10, '热带水果', 2, 3, 1);
+INSERT INTO category (id, name, icon, parent_id, sort, status) VALUES
+(1, '蔬菜', '🥬', 0, 1, 1),
+(2, '水果', '🍎', 0, 2, 1),
+(3, '粮油调料', '🧂', 0, 3, 1),
+(4, '叶菜类', '🥗', 1, 1, 1),
+(5, '根茎类', '🥔', 1, 2, 1),
+(6, '茄果类', '🍅', 1, 3, 1),
+(7, '瓜类', '🥒', 1, 4, 1),
+(8, '浆果类', '🍓', 2, 1, 1),
+(9, '柑橘类', '🍊', 2, 2, 1),
+(10, '热带水果', '🥭', 2, 3, 1);
 
 -- 商品（蔬菜水果）
 INSERT INTO product (id, category_id, name, price_type, price, cost_price, stock, unit, status, warning_stock) VALUES
