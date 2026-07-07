@@ -21,8 +21,12 @@ Page({
   },
 
   onShow() {
-    // 从详情页返回时刷新
-    this.loadProducts(true);
+    // 只在从详情页新增/编辑返回时刷新，避免重复加载
+    const needRefresh = wx.getStorageSync('productNeedRefresh');
+    if (needRefresh) {
+      wx.removeStorageSync('productNeedRefresh');
+      this.loadProducts(true);
+    }
   },
 
   onPullDownRefresh() {
@@ -30,7 +34,7 @@ Page({
   },
 
   onReachBottom() {
-    this.loadMore();
+    // 不使用自动触底加载，改用显式按钮
   },
 
   loadMore() {
