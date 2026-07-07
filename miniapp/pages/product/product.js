@@ -10,7 +10,7 @@ Page({
     showForm: false,
     isEdit: false,
     form: { id: null, name: '', parentId: 0, icon: '' },
-    emojis: ['🥬','🥒','🍅','🥔','🧅','🥕','🌽','🍆','🥦','🍄','🧄','🥜','🍎','🍊','🍋','🍇','🍓','🍑','🥭','🍌','🧂','🍚','🍞','🥛','🧃','🥫','📦'],
+    emojis: ['🥬','🥒','🍅','🥔','🧅','🥕','🍎','🍊','🍋','🍇','🧂','🏠'],
     showProducts: false,   // 是否显示商品列表（叶子节点）
     currentCategoryId: null,
     currentCategoryName: '',

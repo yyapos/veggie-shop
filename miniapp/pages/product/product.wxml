@@ -71,8 +71,9 @@
   </block>
 
   <!-- 新增/编辑弹窗 -->
-  <view class="modal" wx:if="{{showForm}}" catchtap="hideForm">
-    <view class="modal-content" catchtap="">
+  <view class="modal" wx:if="{{showForm}}">
+    <view class="modal-mask" bindtap="hideForm"></view>
+    <view class="modal-content">
       <view class="card">
         <view class="text-bold text-lg mb-20">{{isEdit ? '✏️ 编辑分类' : '➕ 新增分类'}}</view>
         <view class="form-group">
