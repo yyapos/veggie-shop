@@ -1,0 +1,48 @@
+<view class="container">
+  <!-- 分类列表 -->
+  <view class="card" wx:for="{{categories}}" wx:key="id">
+    <view class="flex-between">
+      <text class="text-bold">{{item.name}}</text>
+      <view>
+        <button size="mini" bindtap="showAdd" data-parent-id="{{item.id}}">+子分类</button>
+        <button size="mini" bindtap="showEdit" data-id="{{item.id}}" data-name="{{item.name}}" data-parent-id="{{item.parentId}}">编辑</button>
+        <button size="mini" type="warn" bindtap="deleteCategory" data-id="{{item.id}}" data-name="{{item.name}}">删除</button>
+      </view>
+    </view>
+    <!-- 子分类 -->
+    <view wx:if="{{item.children && item.children.length}}" class="ml-20 mt-10">
+      <view class="flex-between sub-item" wx:for="{{item.children}}" wx:key="id" wx:for-item="child">
+        <text class="text-muted">├ {{child.name}}</text>
+        <view>
+          <button size="mini" bindtap="showEdit" data-id="{{child.id}}" data-name="{{child.name}}" data-parent-id="{{child.parentId}}">编辑</button>
+          <button size="mini" type="warn" bindtap="deleteCategory" data-id="{{child.id}}" data-name="{{child.name}}">删除</button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <button class="btn-primary mt-20" bindtap="showAdd" data-parent-id="0" style="width:100%">+ 添加顶级分类</button>
+
+  <!-- 新增/编辑弹窗 -->
+  <view class="modal" wx:if="{{showForm}}" catchtap="hideForm">
+    <view class="modal-content" catchtap="">
+      <view class="card">
+        <view class="text-bold text-lg mb-20">{{isEdit ? '编辑分类' : '新增分类'}}</view>
+        <view class="form-group">
+          <view class="form-label">分类名称</view>
+          <input class="form-input" value="{{form.name}}" bindinput="onNameInput" placeholder="请输入分类名称" />
+        </view>
+        <view class="form-group">
+          <view class="form-label">父级分类</view>
+          <picker mode="selector" range="{{parentOptions}}" range-key="name" bindchange="onParentChange">
+            <view class="form-input">{{parentOptions.length > 0 ? '已选择父级' : '顶级分类'}}</view>
+          </picker>
+        </view>
+        <view class="flex-between mt-20">
+          <button class="btn-cancel" bindtap="hideForm">取消</button>
+          <button class="btn-primary" bindtap="saveCategory">保存</button>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -7,7 +7,8 @@
     "pages/purchase/purchase",
     "pages/debtor/debtor",
     "pages/debtor/detail",
-    "pages/dashboard/dashboard"
+    "pages/dashboard/dashboard",
+    "pages/category/category"
   ],
   "window": {
     "backgroundTextStyle": "light",

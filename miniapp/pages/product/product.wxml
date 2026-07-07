@@ -2,6 +2,10 @@
 <wxs module="util" src="../../utils/util.wxs"></wxs>
 <view class="container">
   <!-- 搜索栏 -->
+  <view class="flex-between mb-10">
+    <text></text>
+    <button class="btn-primary" size="mini" bindtap="goCategory">管理分类</button>
+  </view>
   <view class="search-bar">
     <input class="search-input" placeholder="搜索商品名称" bindinput="onSearch" value="{{searchName}}"
            confirm-type="search" bindconfirm="doSearch" />

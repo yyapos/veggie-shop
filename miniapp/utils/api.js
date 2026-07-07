@@ -103,6 +103,13 @@ api.getUnpaidDebts = (debtorId) => api.get('/api/debt/unpaid/' + debtorId);
 api.getRepayments = (params) => api.get('/api/repayment/page', params);
 api.addRepayment = (data) => api.post('/api/repayment', data);
 
+// --- 分类管理 ---
+api.getCategoryTree = () => api.get('/api/category/tree');
+api.getCategoryById = (id) => api.get('/api/category/' + id);
+api.addCategory = (data) => api.post('/api/category', data);
+api.updateCategory = (data) => api.put('/api/category', data);
+api.deleteCategory = (id) => api.delete('/api/category/' + id);
+
 // --- 仪表盘 ---
 api.getDashboard = () => api.get('/api/dashboard');
 

@@ -112,6 +112,11 @@ Page({
     wx.navigateTo({ url: '/pages/product/detail' });
   },
 
+  // 分类管理
+  goCategory() {
+    wx.navigateTo({ url: '/pages/category/category' });
+  },
+
   // 快速上下架
   async toggleStatus(e) {
     const { id, status } = e.currentTarget.dataset;
