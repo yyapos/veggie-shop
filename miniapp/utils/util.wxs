@@ -1,0 +1,13 @@
+// WXS 工具函数（WXML 中可用）
+module.exports = {
+  priceTypeText: function(type) {
+    if (type === 'PRICE_WEIGHT') return '按斤';
+    if (type === 'PRICE_PER') return '按份';
+    if (type === 'PRICE_UNIT') return '按个';
+    return type || '';
+  },
+  formatMoney: function(amount) {
+    if (amount == null) return '0.00';
+    return parseFloat(amount).toFixed(2);
+  }
+};

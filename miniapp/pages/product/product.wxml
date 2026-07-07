@@ -1,4 +1,5 @@
 <!-- 商品管理列表 -->
+<wxs module="util" src="../../utils/util.wxs"></wxs>
 <view class="container">
   <!-- 搜索栏 -->
   <view class="search-bar">
@@ -21,10 +22,10 @@
         <view class="flex-col" style="flex:1">
           <view class="flex-row">
             <text class="text-bold text-lg">{{item.name}}</text>
-            <text class="tag tag-info mr-10">{{util.priceTypeText(item.priceType)}}</text>
+            <text class="tag tag-info mr-10">{{item.priceTypeText}}</text>
           </view>
           <view class="mt-10 flex-row">
-            <text class="text-primary text-bold mr-20">¥{{util.formatMoney(item.price)}}/{{item.unit}}</text>
+            <text class="text-primary text-bold mr-20">¥{{item.formattedPrice}}/{{item.unit}}</text>
             <text class="text-sm text-muted">库存: {{item.stock}}{{item.unit}}</text>
           </view>
         </view>
@@ -41,14 +42,15 @@
       </view>
     </view>
 
+    <!-- 分页状态 -->
     <view wx:if="{{loading}}" class="text-center mt-30">
       <text class="text-muted">加载中...</text>
     </view>
     <view wx:if="{{!hasMore && products.length > 0}}" class="text-center mt-30">
-      <text class="text-muted">—— 没有更多了 ——</text>
+      <text class="text-muted">共 {{total}} 条，第 {{page}}/{{totalPages}} 页</text>
     </view>
     <view wx:if="{{!loading && products.length === 0}}" class="text-center mt-30">
-      <text class="text-muted">暂无商品</text>
+      <text class="text-muted">暂无商品，点击右下角 + 添加</text>
     </view>
   </view>
 

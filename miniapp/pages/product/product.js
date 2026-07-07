@@ -8,7 +8,9 @@ Page({
     currentCategoryId: null,
     searchName: '',
     page: 1,
+    size: 20,
     total: 0,
+    totalPages: 0,
     loading: false,
     hasMore: true
   },
@@ -57,11 +59,18 @@ Page({
       if (this.data.currentCategoryId) params.categoryId = this.data.currentCategoryId;
 
       const result = await api.getProducts(params);
-      const list = reset ? (result.records || []) : [...this.data.products, ...(result.records || [])];
+      const records = (result.records || []).map(p => ({
+        ...p,
+        priceTypeText: p.priceType === 'PRICE_WEIGHT' ? '按斤' : p.priceType === 'PRICE_PER' ? '按份' : p.priceType === 'PRICE_UNIT' ? '按个' : p.priceType,
+        formattedPrice: parseFloat(p.price || 0).toFixed(2)
+      }));
+      const list = reset ? records : [...this.data.products, ...records];
+      const total = result.total || 0;
       this.setData({
         products: list,
-        total: result.total || 0,
-        hasMore: list.length < (result.total || 0)
+        total: total,
+        totalPages: Math.ceil(total / this.data.size),
+        hasMore: list.length < total
       });
     } catch (e) {
       console.error('加载商品失败', e);
